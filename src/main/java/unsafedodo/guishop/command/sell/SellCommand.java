@@ -91,6 +91,7 @@ public class SellCommand {
 					player.getInventory().remove(stack -> isItemEqual(stack, shopItem), count, player.getInventory());
 					Account account = EconomyHandler.getAccount(player.getUuid());
 					EconomyHandler.add(account, totalPrice);
+					shopItem.decreasePrice(count);
 					MutableText message = Text.literal("Sold " + count + " " + shopItem.getItemName() + " for $" + String.format("%.2f", totalPrice)).styled(style -> style.withColor(Formatting.GREEN));
 					context.getSource().sendFeedback(() -> message, false);
 					return 1;
@@ -119,6 +120,7 @@ public class SellCommand {
 							player.getInventory().remove(stack -> isItemEqual(stack, shopItem), count, player.getInventory());
 							totalPrice += price;
 							totalCount += count;
+							shopItem.decreasePrice(count);
 							hoverText.append(Text.literal(count + " x " + shopItem.getItemName() + " - $" + String.format("%.2f", price) + "\n").formatted(Formatting.GRAY));
 							break;
 						}

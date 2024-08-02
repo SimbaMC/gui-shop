@@ -4,7 +4,6 @@ import eu.pb4.placeholders.api.TextParserUtils;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
-import net.impactdev.impactor.api.ImpactorServiceProvider;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,9 +15,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import unsafedodo.guishop.GUIShop;
 import unsafedodo.guishop.shop.ShopItem;
-import unsafedodo.guishop.util.CommonMethods;
 import unsafedodo.guishop.util.EconomyHandler;
 
 import java.util.concurrent.ExecutionException;
@@ -74,6 +71,7 @@ public class NewQuantityGUI extends SimpleGui {
                             if (item.getBuyItemPrice() == -1.0) {
                                 player.sendMessage(Text.literal("This item is not for sale").formatted(Formatting.RED));
                             } else if (EconomyHandler.remove(playerAccount, item.getBuyItemPrice()*quantity)){
+                                item.increasePrice(quantity);
                                 ItemStack givenItem = new ItemStack(Registries.ITEM.get(new Identifier(item.getItemMaterial())), quantity);
                                 if((item.getNbt() != null) && !(item.getNbt().toString().equals("{}")))
                                     givenItem.setNbt(item.getNbt());
@@ -108,6 +106,7 @@ public class NewQuantityGUI extends SimpleGui {
                                 player.sendMessage(Text.literal("You can't sell this item!").formatted(Formatting.RED));
                             } else if (removeItemFromInventory(player, Registries.ITEM.get(new Identifier(item.getItemMaterial())), quantity)){
                                 EconomyHandler.add(playerAccount, item.getSellItemPrice()*quantity);
+                                item.decreasePrice(quantity);
                                 try {
                                     this.setSlot(45, new GuiElementBuilder()
                                             .setItem(Items.PLAYER_HEAD)

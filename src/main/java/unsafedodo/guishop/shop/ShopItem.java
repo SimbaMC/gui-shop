@@ -57,6 +57,16 @@ public class ShopItem {
         return quantities;
     }
 
+    public void increasePrice (int quantity) {
+        if (this.buyItemPrice != -1.0) this.buyItemPrice *= (float) Math.pow(1.0157477f, quantity);
+        if (this.sellItemPrice != -1.0) this.sellItemPrice *= (float) Math.pow(1.0157477f, quantity);
+    }
+
+    public void decreasePrice (int quantity) {
+        if (this.buyItemPrice != -1.0) this.buyItemPrice /= (float) Math.pow(1.0157477f, quantity);
+        if (this.sellItemPrice != -1.0) this.sellItemPrice /= (float) Math.pow(1.0157477f, quantity);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
